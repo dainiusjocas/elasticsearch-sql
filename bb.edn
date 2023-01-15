@@ -27,7 +27,7 @@
               (spit -es-malli-schema (with-out-str (clojure.pprint/pprint request))))}
 
   outdated
-  {:doc "Check for outdated dependencies"
+  {:doc  "Check for outdated dependencies"
    :task (shell "bb -f scripts/outdated.clj")}
 
   lint
@@ -47,7 +47,9 @@
 
   uberjar
   {:doc  "Generates an uberjar"
-   :task (clojure "-T:app:build" "uberjar")}
+   :task (do
+           (clojure "-T:app:build" "uberjar")
+           (println (fs/list-dir "./target")))}
 
   native-image
   {:doc     "Generates native-image with -o target/esql"
