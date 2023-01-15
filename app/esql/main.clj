@@ -36,12 +36,12 @@
 (defn -main [& args]
   (if (empty? args)
     (do
-      (println (cli/summary))
+      (println cli/summary)
       (System/exit 1))
     (let [config (cli/parse-args args)]
       (cond
         (:help config)
-        (println (cli/summary))
+        (println cli/summary)
 
         (:dry-run config)
         (pp/pprint config)

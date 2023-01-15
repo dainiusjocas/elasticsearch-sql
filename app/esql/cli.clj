@@ -8,7 +8,7 @@
     [esql.cli.schema :as cli-schema]))
 
 (def default-parse-opts
-  {:with-defaults? true
+  {:with-defaults?              true
    :with-optional-key-defaults? true})
 
 (defn parse-args
@@ -22,7 +22,7 @@
                                  {::mt/add-optional-keys
                                   with-optional-key-defaults?}))))))
 
-(defn summary []
+(def summary
   (format "ESQL CLI options:\n%s"
           (malli-cli/summary (cli-summary/prepare cli-schema/final))))
 

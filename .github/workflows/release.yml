@@ -16,14 +16,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest ]
+        os: [ ubuntu-20.04 ]
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             platform: linux
             gu-binary: gu
             arch: 'amd64'
-            native-image-musl: 'false'
-            static-suffix: ''
+            native-image-musl: 'true'
+            static-suffix: '-static'
     steps:
       - name: Set env variable with the release version
         run: echo "RELEASE_VERSION=0.0.0" >> $GITHUB_ENV
@@ -53,6 +53,6 @@ jobs:
           gu --version
           native-image --version
           bb native-image
-          zip esql-${RELEASE_VERSION}-${{ matrix.platform }}-${{ matrix.arch }}${{ matrix.static-suffix }}.zip target/esql
-          ls
+          zip target/esql-${RELEASE_VERSION}-${{ matrix.platform }}-${{ matrix.arch }}${{ matrix.static-suffix }}.zip target/esql
+          ls -lh target
         if: runner.os != 'Windows'
