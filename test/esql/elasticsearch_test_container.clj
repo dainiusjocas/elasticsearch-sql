@@ -50,7 +50,7 @@
                                                     :tls             false
                                                     :read-timout     5
                                                     :headers         {"Accept" "text/plain"}
-                                                    :startup-timeout 20}
+                                                    :startup-timeout 30}
                                   :log-strategy    :fn
                                   :function        (fn [log-line] (println "ES>: " log-line))})
                                (tc/start!))
