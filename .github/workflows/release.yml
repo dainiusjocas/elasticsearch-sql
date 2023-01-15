@@ -1,0 +1,44 @@
+name: Create a release of lmgrep
+
+on:
+  push:
+    branches:
+      - 'initial-release'
+
+jobs:
+  build-native-executables-and-upload-to-release:
+    name: Native image build on ${{ matrix.os }}
+    needs: [ create-gh-release, build-uberjar-upload-to-release-and-store-artifacts ]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        include:
+          - os: ubuntu-latest
+            platform: linux
+            gu-binary: gu
+            arch: 'amd64'
+            native-image-musl: 'true'
+            static-suffix: '-static'
+    steps:
+      - name: Set env variable with the release version
+        run: echo "0.0.0" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v3.3.0
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          version: ${{ env.GRAALVM_VERSION }}
+          java-version: '17'
+          components: 'native-image'
+          native-image-musl: ${{ matrix.native-image-musl }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build native-image on *nix
+        env:
+          ESQL_STATIC: ${{ matrix.native-image-musl }}
+          ESQL_MUSL: ${{ matrix.native-image-musl }}
+        run: |
+          bb native-image
+          zip esql-${RELEASE_VERSION}-${{ matrix.platform }}-${{ matrix.arch }}${{ matrix.static-suffix }}.zip target/esql
+          ls
+        if: runner.os != 'Windows'
