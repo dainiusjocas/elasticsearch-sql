@@ -1,0 +1,10 @@
+schema.json
+.clerk
+.cpcache
+.idea
+.nrepl-port
+*.iml
+target/
+.DS_Store
+.clj-kondo/
+.env
