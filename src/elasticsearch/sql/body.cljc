@@ -4,14 +4,16 @@
             [clojure.java.io :as io])
   #?(:clj (:import (java.io InputStream))))
 
-(defn prep-initial [{:keys [columnar query fetch_size field_multi_value_leniency]}]
+(defn prep-initial [{:keys [params columnar query fetch_size field_multi_value_leniency]}]
   (cond-> {:query query}
           (some? fetch_size)
           (assoc :fetch_size fetch_size)
           (some? field_multi_value_leniency)
           (assoc :field_multi_value_leniency field_multi_value_leniency)
           (some? columnar)
-          (assoc :columnar columnar)))
+          (assoc :columnar columnar)
+          (some? params)
+          (assoc :params params)))
 
 (defn decode [{{:keys [content-type]} :headers resp-body :body}]
   (cond (re-matches #"^text/.*" content-type)

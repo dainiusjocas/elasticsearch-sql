@@ -11,6 +11,12 @@
              (m/properties (mu/get (cli-keys/boolean-handles-0-args schema)
                                    :foo))))))
 
+  (testing "map-of params should collect into a list"
+    (let [schema [:map [:params [:map-of {:a :b} :string :any]]]]
+      (is (= [:map [:params [:any {:a :b
+                                   :update-fn cli-keys/collect-args-into-vector}]]]
+             (m/form (cli-keys/replace-map-of-with-any-and-concat-vals schema))))))
+
   (testing "preparing keys for CLI"
     (let [schema [:map [:foo_bar [:string]]]
           prep-schema (cli-keys/prepare-keys-for-cli schema)]

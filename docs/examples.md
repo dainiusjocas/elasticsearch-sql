@@ -11,6 +11,11 @@ Escaping string parameters when wrapped in double quotes:
 ./esql --query="SELECT title FROM \"articles-index\" WHERE MATCH(title, 'clojure') LIMIT 2"
 ```
 
+Or you can provide parameters list:
+```shell
+./esql --query="SELECT title FROM \"articles-index\" WHERE MATCH(title, ?) LIMIT 2" --params=clojure
+```
+
 Another way escaping string parameter when CLI params is wrapped in single quotes:
 ```shell
 ./esql --query='SELECT title FROM "article-items" WHERE MATCH(title, '"'"'tee'"'"') LIMIT 2'
@@ -23,6 +28,6 @@ Run with Babashka:
 
 Run with Clojure:
 ```shell
-clojure -M:app -m eqsl.main --query="SELECT * FROM index LIMIT 2" --format=csv --fetch-size=1
+clojure -M:app -m esql.main --query="SELECT * FROM index LIMIT 2" --format=csv --fetch-size=1
 ```
 

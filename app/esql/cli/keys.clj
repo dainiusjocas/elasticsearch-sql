@@ -47,9 +47,23 @@
   [schema]
   (update-schema-keys-with-fn schema if-boolean-0-arg))
 
+(defn collect-args-into-vector [options {:keys [in]} _cli-args]
+  (update-in options in concat _cli-args))
+
+(defn replace-map-of-with-any-and-concat-vals
+  [schema]
+  (update-schema-keys-with-fn
+    schema
+    (fn [schema _]
+      (if (= :map-of (m/type schema))
+        (let [updated-props (assoc (m/properties schema) :update-fn collect-args-into-vector)]
+          (m/schema [:any updated-props]))
+        schema))))
+
 (defn prepare [schema cli-schema-base]
   (-> schema
       (mu/merge cli-schema-base)
       (add-env-var-defaults-to-keys)
       (boolean-handles-0-args)
-      (prepare-keys-for-cli)))
+      (prepare-keys-for-cli)
+      (replace-map-of-with-any-and-concat-vals)))

@@ -153,3 +153,14 @@
                   [0 1])
                 '([2 3]
                   [2 3])] resp))))))
+
+(deftest handle-params
+  (let [query (format "SELECT * FROM %s WHERE COL1=? LIMIT 2" index-name)]
+    (testing "early termination"
+      (let [resp (into [] (take 1) (esql/reducible {:elasticsearch_hosts es-host
+                                                    :query               query
+                                                    :format              "csv"
+                                                    :params              [3]}))]
+        (is (vector? resp))
+        (is (= 1 (count resp)))
+        (is (= ["COL1,COL2\r\n3,3\r\n"] resp))))))

@@ -27,7 +27,15 @@
     (is (= {:elasticsearch-hosts "http://localhost:9200"
             :query               nil
             :fetch-size          1}
-           (cli/parse-args ["--fetch-size" "1"] parse-opts)))))
+           (cli/parse-args ["--fetch-size" "1"] parse-opts))))
+
+  (testing "params handling"
+    (is (= {:elasticsearch-hosts "http://localhost:9200"
+            :query               nil
+            :params              ["a" "b"]}
+           (cli/parse-args
+             ["--params=a" "--params=b"]
+             parse-opts)))))
 
 (deftest validation
   (testing "passing string instead of integer is invalid"
