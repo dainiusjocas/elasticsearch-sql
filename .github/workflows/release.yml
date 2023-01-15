@@ -22,7 +22,7 @@ jobs:
             static-suffix: '-static'
     steps:
       - name: Set env variable with the release version
-        run: echo "0.0.0" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=0.0.0" >> $GITHUB_ENV
 
       - uses: actions/checkout@v3.3.0
       - uses: graalvm/setup-graalvm@v1
