@@ -1,4 +1,4 @@
-name: Create a release of lmgrep
+name: Create a release of ESQL
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 jobs:
   build-native-executables-and-upload-to-release:
     name: Native image build on ${{ matrix.os }}
-    needs: [ create-gh-release, build-uberjar-upload-to-release-and-store-artifacts ]
+    needs: []
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
