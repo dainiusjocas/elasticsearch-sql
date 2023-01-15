@@ -56,3 +56,9 @@ Install:
 - Optional: [clj-kondo](https://github.com/clj-kondo/clj-kondo)
 
 Run `bb tasks` for a list of all available tasks.
+
+## License
+
+Copyright &copy; 2023 [Dainius Jocas](https://www.jocas.lt).
+
+Distributed under The Apache License, Version 2.0.
