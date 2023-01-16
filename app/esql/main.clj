@@ -6,6 +6,8 @@
     [esql.cli :as cli]
     [elasticsearch.sql :as sql]))
 
+(set! *warn-on-reflection* true)
+
 (defn underscore-keys
   "SQL expects all the keys to be underscored."
   [m]
@@ -23,8 +25,8 @@
   ([_])
   ([_ data]
    (if (string? data)
-     (.print System/out data)
-     (.println System/out data))))
+     (print data)
+     (println data))))
 
 (defn execute
   "Fetch data from Elasticsearch and print it to STDOUT.
@@ -51,4 +53,5 @@
           (println (cli/explain-errors config))
           (System/exit 1))
 
-        :else (execute config)))))
+        :else (execute config))))
+  (.flush *out*))
