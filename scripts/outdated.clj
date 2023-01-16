@@ -31,5 +31,5 @@
         :when (not= version new-version)]
   (println dep "can be upgraded from" version "to" new-version))
 
-;; https://github.com/babashka/babashka/blob/master/examples/outdated.clj
+;; Copied from https://github.com/babashka/babashka/blob/master/examples/outdated.clj
 ;; Inspired by an idea from @seancorfield on Clojurians Slack
