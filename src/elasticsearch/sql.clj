@@ -11,8 +11,9 @@
 (defn reducible
   "Creates an IReduceInit given Elasticsearch SQL query.
   Docs: https://www.elastic.co/guide/en/elasticsearch/reference/current/sql-rest.html"
-  [{host :elasticsearch_hosts query :query columnar? :columnar :as conf}]
-  (assert (some? query) "Query is required")
+  [{host :elasticsearch_hosts query :query :as conf}]
+  (assert (some? host) "Elasticsearch host is required!")
+  (assert (some? query) "Query is required!")
   (let [body (body/prep-initial conf)
         query-url-params (query-params/prepare conf)
         request-headers (headers/prepare conf)]
@@ -28,15 +29,13 @@
                 (if (reduced? state)
                   (do
                     ; Downstream stopped consuming; closing the cursor
-                    (cursor/clear host request-headers cursor)
+                    (cursor/clear! host request-headers cursor)
                     (unreduced state))
                   (if cursor
                     ; next page
                     (recur (body/apply-rf rf state body)
                            (client/continue host
-                                            (if columnar?
-                                              (assoc cursor :columnar columnar?)
-                                              cursor)
+                                            (cursor/prepare-body cursor conf)
                                             query-url-params
                                             request-headers))
                     ; last page
