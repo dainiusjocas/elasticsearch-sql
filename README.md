@@ -1,3 +1,8 @@
+[![Clojars Project](https://img.shields.io/clojars/v/lt.jocas/elasticsearch-sql.svg)](https://clojars.org/lt.jocas/elasticsearch-sql)
+[![cljdoc badge](https://cljdoc.org/badge/lt.jocas/elasticsearch-sql)](https://cljdoc.org/d/lt.jocas/elasticsearch-sql/CURRENT)
+[![Tests](https://github.com/dainiusjocas/elasticsearch-sql/actions/workflows/test.yml/badge.svg)](https://github.com/dainiusjocas/elasticsearch-sql/actions/workflows/test.yml)
+<a href="https://babashka.org" rel="nofollow"><img src="https://github.com/babashka/babashka/raw/master/logo/badge.svg" alt="bb compatible" style="max-width: 100%;"></a>
+
 # esql - Elasticsearch SQL API CLI Client
 
 A CLI tool and a Clojure library to query [Elasticearch](https://www.elastic.co/what-is/elasticsearch) with SQL.
@@ -55,6 +60,13 @@ ESQL CLI parameters:
          --wait-for-completion-timeout                           Period to wait for complete results. Defaults to no timeout, meaning the request waits for complete search results. If the search doesn’t finish within this period, the search becomes async.
 ```
 
+## Library
+
+From the [Clojars](https://clojars.org/lt.jocas/elasticsearch-sql/):
+```clojure
+lt.jocas/elasticsearch-sql {:mvn/version "RELEASE"}
+```
+
 ## Development
 
 Install:
@@ -83,7 +95,7 @@ Run `bb tasks` for a list of all available tasks.
   - [x] with prefix? yes ESQL_*
   - [x] ELASTICSEARCH_HOSTS from kibana [docker](https://www.elastic.co/guide/en/kibana/current/docker.html)
 - [x] Split into lib, and app `deps.edn` aliases. Native-image builds the `app` alias
-- [ ] Deploy lib to Clojars
+- [x] Deploy lib to Clojars
 - [x] Handle `params` schema `[:vector :any]`, cli `--params 1 --params 2` into a vector
 - [ ] Babashka pod
 - [ ] Docker image
