@@ -62,6 +62,8 @@
 
 (defn prepare [schema cli-schema-base]
   (-> schema
+      (mu/dissoc :runtime_mappings)
+      (mu/dissoc :catalog)
       (mu/merge cli-schema-base)
       (add-env-var-defaults-to-keys)
       (boolean-handles-0-args)

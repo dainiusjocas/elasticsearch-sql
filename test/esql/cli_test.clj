@@ -35,7 +35,28 @@
             :params              ["a" "b"]}
            (cli/parse-args
              ["--params=a" "--params=b"]
+             parse-opts))))
+
+  (testing "Some lesser used options parsing"
+    (is (= {:columnar                    true
+            :elasticsearch-hosts         "http://localhost:9200"
+            :field-multi-value-leniency  true
+            :index-using-frozen          true
+            :keep-alive                  "11s"
+            :keep-on-completion          true
+            :query                       nil
+            :request-timeout             "12s"
+            :wait-for-completion-timeout "123s"}
+           (cli/parse-args
+             ["--columnar"
+              "--request-timeout=12s"
+              "--field-multi-value-leniency"
+              "--wait-for-completion-timeout=123s"
+              "--keep-alive=11s"
+              "--keep-on-completion"
+              "--index-using-frozen"]
              parse-opts)))))
+
 
 (deftest validation
   (testing "passing string instead of integer is invalid"
