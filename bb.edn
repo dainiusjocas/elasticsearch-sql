@@ -1,0 +1,65 @@
+{:paths          ["app" "src" "resources" "scripts"]
+ :deps           {metosin/malli      {:mvn/version "0.10.0"}
+                  lt.jocas/malli-cli {:git/url "https://github.com/dainiusjocas/malli-cli"
+                                      :sha     "699de0ee5d568276c7b68baae803cdffa8770bd4"}}
+ :min-bb-version "1.0.169"
+ :tasks
+ {:requires        ([babashka.fs :as fs]
+                    [clojure.string :as str]
+                    [clojure.java.io :as io]
+                    [org.httpkit.client :as http]
+                    [sql-schema :as es-sql])
+  -schema-json-url "https://raw.githubusercontent.com/elastic/elasticsearch-specification/main/output/schema/schema.json"
+  -schema-json     "schema.json"
+  -es-malli-schema "resources/elasticsearch-sql-schema.edn"
+
+  download-schema
+  {:doc     "Downloads Elasticsearch specification to the schema.json file"
+   :depends [-schema-json-url -schema-json]
+   :task    (when-not (fs/exists? -schema-json)
+              (io/copy
+                (:body (deref (http/get -schema-json-url {:as :stream})))
+                (io/file -schema-json)))}
+
+  prepare-schema
+  {:doc     "Prepare Elasticsearch SQL request schema"
+   :depends [-schema-json download-schema -es-malli-schema]
+   :task    (let [{:keys [endpoint request]} (es-sql/parse -schema-json)]
+              (spit -es-malli-schema (with-out-str (clojure.pprint/pprint request))))}
+
+  outdated
+  {:doc  "Check for outdated dependencies"
+   :task (shell "bb -f scripts/outdated.clj")}
+
+  lint
+  {:doc  "Either clj-kondo CLI or the JVM version"
+   :task (try
+           (shell "clj-kondo" "--lint" "app" "src" "test")
+           (catch Exception _
+             (clojure "-M:clj-kondo")))}
+
+  test
+  {:doc  "Run test suite on app and library together."
+   :task (clojure "-M:app:dev:test")}
+
+  uberscript
+  {:doc  "Wrapper for the uberscript command"
+   :task (shell "bb uberscript foo.clj -m esql.main")}
+
+  uberjar
+  {:doc  "Generates an uberjar"
+   :task (clojure "-T:app:build" "uberjar")}
+
+  native-image
+  {:doc     "Generates native-image with -o target/esql"
+   :depends [uberjar]
+   :task    (let [base-command (str/join " " ["native-image"
+                                              "-jar ./target/esql.jar"
+                                              "-o ./target/esql"
+                                              "--no-fallback"
+                                              "--initialize-at-build-time"])]
+              (shell (cond-> base-command
+                       (= "true" (System/getenv "ESQL_STATIC"))
+                       (str " --static")
+                       (= "true" (System/getenv "ESQL_MUSL"))
+                       (str " --libc=musl"))))}}}

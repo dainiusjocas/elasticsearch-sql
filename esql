@@ -1,0 +1,5 @@
+#!/usr/bin/env bb
+
+(require '[esql.main :as esql])
+
+(apply esql/-main *command-line-args*)

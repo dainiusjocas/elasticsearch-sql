@@ -1,0 +1,32 @@
+{
+  "description": "Executes a SQL request",
+  "docUrl": "https://www.elastic.co/guide/en/elasticsearch/reference/current/sql-search-api.html",
+  "name": "sql.query",
+  "request": {
+    "name": "Request",
+    "namespace": "sql.query"
+  },
+  "requestBodyRequired": true,
+  "requestMediaType": [
+    "application/json"
+  ],
+  "response": {
+    "name": "Response",
+    "namespace": "sql.query"
+  },
+  "responseMediaType": [
+    "application/json"
+  ],
+  "since": "6.3.0",
+  "stability": "stable",
+  "urls": [
+    {
+      "methods": [
+        "POST",
+        "GET"
+      ],
+      "path": "/_sql"
+    }
+  ],
+  "visibility": "public"
+}

@@ -1,0 +1,33 @@
+{:paths ["src" "resources"]
+ :deps  {metosin/malli        {:mvn/version "0.10.0"}
+         cheshire/cheshire    {:mvn/version "5.11.0"}
+         http-kit/http-kit    {:mvn/version "2.6.0"}
+         clj-commons/clj-yaml {:mvn/version "1.0.26"}}
+ :aliases
+ {:dev
+  {:extra-paths ["dev" "classes" "scripts" "test" "test/resources"]
+   :extra-deps
+   {io.github.nextjournal/clerk             {:mvn/version "0.12.707"}
+    io.github.nextjournal/clerk-slideshow   {:git/sha "562f634494a1e1a9149ed78d5d39fd9486cc00ba"}
+    org.slf4j/slf4j-nop                     {:mvn/version "1.7.36"}
+    clj-test-containers/clj-test-containers {:mvn/version "0.7.4"}
+    io.github.cognitect-labs/test-runner    {:git/tag "v0.5.1" :git/sha "dfb30dd"}}}
+
+  :app
+  {:extra-paths ["app"]
+   :extra-deps  {lt.jocas/malli-cli                   {:git/url "https://github.com/dainiusjocas/malli-cli"
+                                                       :sha     "699de0ee5d568276c7b68baae803cdffa8770bd4"}
+                 com.github.clj-easy/graal-build-time {:mvn/version "0.1.4"}}}
+
+  :test
+  {:extra-paths ["scripts" "test" "test/resources"]
+   :main-opts   ["-m" "esql.entrypoint"]}
+
+  :clj-kondo
+  {:main-opts  ["-m" "clj-kondo.main" "--lint" "src" "test"]
+   :extra-deps {clj-kondo/clj-kondo {:mvn/version "2023.01.12"}}
+   :jvm-opts   ["-Dclojure.main.report=stderr"]}
+
+  :build
+  {:deps       {org.clojure/tools.build {:mvn/version "0.9.1"}}
+   :ns-default build}}}
