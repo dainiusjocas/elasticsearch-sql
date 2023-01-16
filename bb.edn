@@ -3,6 +3,7 @@
                   lt.jocas/malli-cli {:git/url "https://github.com/dainiusjocas/malli-cli"
                                       :sha     "699de0ee5d568276c7b68baae803cdffa8770bd4"}}
  :min-bb-version "1.0.169"
+ :bbin/bin       {esql {:main-opts ["-f" "esql"]}}
  :tasks
  {:requires        ([babashka.fs :as fs]
                     [clojure.string :as str]
