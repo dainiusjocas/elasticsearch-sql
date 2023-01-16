@@ -3,7 +3,7 @@ name: Create a release of ESQL
 on:
   push:
     tags:
-      - 'v*'
+      - 'xxx*'
 
 env:
   BABASHKA_VERSION: '1.0.169'
