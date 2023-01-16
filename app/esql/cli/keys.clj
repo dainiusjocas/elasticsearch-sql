@@ -2,7 +2,8 @@
   (:require
     [clojure.string :as str]
     [malli.core :as m]
-    [malli.util :as mu]))
+    [malli.util :as mu]
+    [esql.cli.util :as util]))
 
 (defn dashify-keys [acc key]
   (assoc acc key (-> key (name) (str/replace "_" "-") (keyword))))
@@ -20,13 +21,6 @@
 (defn key->env-var [key]
   (str env-var-prefix (-> key name (str/upper-case) (str/replace #"\W" "_"))))
 
-(defn update-schema-keys-with-fn [schema f]
-  (loop [schema schema
-         [key & ks] (mu/keys schema)]
-    (if key
-      (recur (mu/update schema key f key) ks)
-      schema)))
-
 (defn add-env-var-from-name [schema key]
   (if (:env-var (m/properties schema))
     schema
@@ -35,7 +29,7 @@
 (defn add-env-var-defaults-to-keys
   "For every key add an environment variable."
   [schema]
-  (update-schema-keys-with-fn schema add-env-var-from-name))
+  (util/update-schema-keys-with-fn schema add-env-var-from-name))
 
 (defn if-boolean-0-arg [schema _]
   (if (= :boolean (m/type schema))
@@ -45,14 +39,14 @@
 (defn boolean-handles-0-args
   "If key in a map has boolean type then in CLI it should not take any params."
   [schema]
-  (update-schema-keys-with-fn schema if-boolean-0-arg))
+  (util/update-schema-keys-with-fn schema if-boolean-0-arg))
 
 (defn collect-args-into-vector [options {:keys [in]} _cli-args]
   (update-in options in concat _cli-args))
 
 (defn replace-map-of-with-any-and-concat-vals
   [schema]
-  (update-schema-keys-with-fn
+  (util/update-schema-keys-with-fn
     schema
     (fn [schema _]
       (if (= :map-of (m/type schema))

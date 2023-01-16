@@ -23,7 +23,7 @@
                                   with-optional-key-defaults?}))))))
 
 (def summary
-  (format "ESQL CLI options:\n%s"
+  (format "ESQL CLI parameters:\n%s"
           (malli-cli/summary (cli-summary/prepare cli-schema/final))))
 
 (defn invalid? [config]

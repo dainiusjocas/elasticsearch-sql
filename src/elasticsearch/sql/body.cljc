@@ -4,6 +4,11 @@
             [clojure.java.io :as io])
   #?(:clj (:import (java.io InputStream))))
 
+(defn prepare-filter-param [filter-param]
+  (if (string? filter-param)
+    (json/parse-string filter-param)
+    filter-param))
+
 (defn prep-initial [{:keys [index_include_frozen filter params columnar
                             query fetch_size field_multi_value_leniency
                             keep_alive keep_on_completion page_timeout
@@ -18,9 +23,7 @@
           (some? params)
           (assoc :params params)
           (some? filter)
-          (assoc :filter (if (string? filter)
-                           (json/parse-string filter)
-                           filter))
+          (assoc :filter (prepare-filter-param filter))
           (some? index_include_frozen)
           (assoc :index_include_frozen index_include_frozen)
           (some? keep_alive)
