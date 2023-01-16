@@ -164,3 +164,15 @@
         (is (vector? resp))
         (is (= 1 (count resp)))
         (is (= ["COL1,COL2\r\n3,3\r\n"] resp))))))
+
+(deftest handle-filter
+  (let [query (format "SELECT * FROM %s LIMIT 2" index-name)]
+    (testing "early termination"
+      (let [resp (into [] (esql/reducible {:elasticsearch_hosts es-host
+                                           :query               query
+                                           :format              "csv"
+                                           :params              [3]
+                                           :filter              {:term {:COL1 5}}}))]
+        (is (vector? resp))
+        (is (= 1 (count resp)))
+        (is (= ["COL1,COL2\r\n5,5\r\n"] resp))))))

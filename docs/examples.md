@@ -16,6 +16,11 @@ Or you can provide parameters list:
 ./esql --query="SELECT title FROM \"articles-index\" WHERE MATCH(title, ?) LIMIT 2" --params=clojure
 ```
 
+Filter can also do selection:
+```shell
+./esql --query="SELECT * FROM index LIMIT 2" --format=csv --filter='{"term": {"COL1": 5}}'
+```
+
 Another way escaping string parameter when CLI params is wrapped in single quotes:
 ```shell
 ./esql --query='SELECT title FROM "article-items" WHERE MATCH(title, '"'"'tee'"'"') LIMIT 2'

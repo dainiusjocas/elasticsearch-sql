@@ -45,6 +45,8 @@
       (mu/update :columnar mu/update-properties assoc :description columnar-description)
       ; Less cryptic errors when multi-value fields are being fetched
       (mu/update :field_multi_value_leniency mu/update-properties assoc :default true)
+      ; Fix filter field default value
+      (mu/update :filter mu/update-properties dissoc :default)
       (add-format-schema)
       (add-delimiter-schema)))
 
