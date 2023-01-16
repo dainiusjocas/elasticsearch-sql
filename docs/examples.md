@@ -1,9 +1,9 @@
-# Examples
+## Some examples
 
 Index names containing dashes must be escaped with double quotes:
 ```shell
-./esql --query="SELECT title FROM \"articles-index\""
-./esql --query='SELECT title FROM "articles-index"'
+./esql --query="SELECT title FROM \"my-index\""
+./esql --query='SELECT title FROM "my-index"'
 ```
 
 Escaping string parameters when wrapped in double quotes:
@@ -31,8 +31,7 @@ Run with Babashka:
 ./esql --query="SELECT * FROM index LIMIT 2" --format=csv --fetch-size=1
 ```
 
-Run with Clojure:
+Run with Clojure CLI:
 ```shell
 clojure -M:app -m esql.main --query="SELECT * FROM index LIMIT 2" --format=csv --fetch-size=1
 ```
-
