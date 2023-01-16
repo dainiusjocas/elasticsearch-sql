@@ -46,7 +46,8 @@
             :keep-on-completion          true
             :query                       nil
             :request-timeout             "12s"
-            :wait-for-completion-timeout "123s"}
+            :wait-for-completion-timeout "123s"
+            :page-timeout                "45s"}
            (cli/parse-args
              ["--columnar"
               "--request-timeout=12s"
@@ -54,7 +55,8 @@
               "--wait-for-completion-timeout=123s"
               "--keep-alive=11s"
               "--keep-on-completion"
-              "--index-using-frozen"]
+              "--index-using-frozen"
+              "--page-timeout=45s"]
              parse-opts)))))
 
 
