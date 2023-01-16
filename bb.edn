@@ -39,7 +39,7 @@
              (clojure "-M:clj-kondo")))}
 
   test
-  {:doc  "Run test suite on app and library together."
+  {:doc  "Run test suite on app and library together"
    :task (clojure "-M:app:dev:test")}
 
   uberscript
@@ -62,4 +62,9 @@
                        (= "true" (System/getenv "ESQL_STATIC"))
                        (str " --static")
                        (= "true" (System/getenv "ESQL_MUSL"))
-                       (str " --libc=musl"))))}}}
+                       (str " --libc=musl"))))}
+
+  release-library
+  {:doc     "Initiate a library release to the Clojars"
+   :depends []
+   :task    (clojure "-T:build" "trigger-library-release")}}}

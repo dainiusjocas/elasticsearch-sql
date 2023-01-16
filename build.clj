@@ -16,7 +16,10 @@
       (bb/jar)
       (bb/deploy)))
 
-(defn trigger-release [opts]
+(defn trigger-library-release
+  "Creates a git tag `lib-vVERSION` and pushes it to origin.
+  This will trigger GH Action to release to Clojars."
+  [opts]
   (let [tag (str "lib-v" (if (:snapshot opts) snapshot version))]
     (println "Initiating release for git tag:" tag)
     (b/git-process {:git-args ["tag" tag]})
