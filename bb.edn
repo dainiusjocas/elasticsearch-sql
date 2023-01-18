@@ -43,9 +43,12 @@
   {:doc  "Run test suite on app and library together"
    :task (clojure "-M:app:dev:test")}
 
-  uberscript
+  prepare-uberscript
   {:doc  "Wrapper for the uberscript command"
-   :task (shell "bb uberscript foo.clj -m esql.main")}
+   :task (do
+           (println "Generating uberscript...")
+           (shell "bb uberscript target/esql.clj -m esql.main")
+           (println "Uberscript is ready!"))}
 
   uberjar
   {:doc  "Generates an uberjar"
