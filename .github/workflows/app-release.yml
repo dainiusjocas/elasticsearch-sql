@@ -105,6 +105,7 @@ jobs:
       - name: Compile uberscript
         run: |
           echo $RELEASE_VERSION > resources/ESQL_VERSION
+          mkdir target
           bb prepare-uberscript
 
       - name: Upload uberjar to the release
