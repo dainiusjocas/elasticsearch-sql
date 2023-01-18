@@ -124,18 +124,18 @@ jobs:
     strategy:
       matrix:
         os: [
-          ubuntu-latest,
+#          ubuntu-latest,
 #          ubuntu-20.04,
 #          macos-latest,
-#          windows-latest
+          windows-latest
         ]
         include:
-          - os: ubuntu-latest
-            platform: linux
-            gu-binary: gu
-            arch: 'amd64'
-            native-image-musl: 'false'
-            static-suffix: ''
+#          - os: ubuntu-latest
+#            platform: linux
+#            gu-binary: gu
+#            arch: 'amd64'
+#            native-image-musl: 'false'
+#            static-suffix: ''
 #          - os: ubuntu-20.04
 #            platform: linux
 #            gu-binary: gu
@@ -148,12 +148,12 @@ jobs:
 #            arch: 'amd64'
 #            native-image-musl: 'false'
 #            static-suffix: ''
-#          - os: windows-latest
-#            platform: windows
-#            gu-binary: gu.exe
-#            arch: 'amd64'
-#            native-image-musl: 'false'
-#            static-suffix: ''
+          - os: windows-latest
+            platform: windows
+            gu-binary: gu.exe
+            arch: 'amd64'
+            native-image-musl: 'false'
+            static-suffix: ''
 #          - os: self-hosted
 #            platform: macos
 #            gu-binary: gu
@@ -192,6 +192,12 @@ jobs:
           bb only-native-image
           zip target/esql-${RELEASE_VERSION}-${{ matrix.platform }}-${{ matrix.arch }}${{ matrix.static-suffix }}.zip target/esql
         if: runner.os != 'Windows'
+
+      - name: Build native-image on Windows and zip it
+        run: |
+          native-image.cmd -jar "target/esql.jar" -H:IncludeResources=LMGREP_VERSION -o "target/esql.exe" --initialize-at-build-time --verbose --no-fallback -J-Xmx8g
+          tar.exe -a -c -f target\esql-$env:GITHUB_REF_NAME-${{ matrix.platform }}-${{ matrix.arch }}.zip target\esql.exe
+        if: runner.os == 'Windows'
 
       - name: Upload binaries to the release
         uses: softprops/action-gh-release@v1
