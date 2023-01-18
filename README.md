@@ -24,6 +24,12 @@ ESQL_ELASTICSEARCH_HOSTS=http://localhost:9200 ./eqsl --query="SELECT * FROM log
                                  :format              "csv"}))
 ```
 
+## Install
+
+```shell
+ brew install dainiusjocas/brew/esql
+```
+
 ## Why?
 
 The initial idea was to play with
