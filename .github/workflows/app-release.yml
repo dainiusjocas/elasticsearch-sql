@@ -3,7 +3,7 @@ name: Create a release of ESQL
 on:
   push:
     tags:
-      - 'vv*'
+      - 'v*'
 
 env:
   BABASHKA_VERSION: '1.0.169'
@@ -124,42 +124,42 @@ jobs:
     strategy:
       matrix:
         os: [
-#          ubuntu-latest,
-#          ubuntu-20.04,
-#          macos-latest,
+          ubuntu-latest,
+          ubuntu-20.04,
+          macos-latest,
           windows-latest
         ]
         include:
-#          - os: ubuntu-latest
-#            platform: linux
-#            gu-binary: gu
-#            arch: 'amd64'
-#            native-image-musl: 'false'
-#            static-suffix: ''
-#          - os: ubuntu-20.04
-#            platform: linux
-#            gu-binary: gu
-#            arch: 'amd64'
-#            native-image-musl: 'true'
-#            static-suffix: '-static'
-#          - os: macos-latest
-#            platform: macos
-#            gu-binary: gu
-#            arch: 'amd64'
-#            native-image-musl: 'false'
-#            static-suffix: ''
+          - os: ubuntu-latest
+            platform: linux
+            gu-binary: gu
+            arch: 'amd64'
+            native-image-musl: 'false'
+            static-suffix: ''
+          - os: ubuntu-20.04
+            platform: linux
+            gu-binary: gu
+            arch: 'amd64'
+            native-image-musl: 'true'
+            static-suffix: '-static'
+          - os: macos-latest
+            platform: macos
+            gu-binary: gu
+            arch: 'amd64'
+            native-image-musl: 'false'
+            static-suffix: ''
           - os: windows-latest
             platform: windows
             gu-binary: gu.exe
             arch: 'amd64'
             native-image-musl: 'false'
             static-suffix: ''
-#          - os: self-hosted
-#            platform: macos
-#            gu-binary: gu
-#            arch: 'aarch64'
-#            native-image-musl: 'false'
-#            static-suffix: ''
+          - os: self-hosted
+            platform: macos
+            gu-binary: gu
+            arch: 'aarch64'
+            native-image-musl: 'false'
+            static-suffix: ''
     steps:
       - name: Set env variable with the release version
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV

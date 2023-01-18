@@ -16,24 +16,26 @@
       (bb/jar)
       (bb/deploy)))
 
+(defn create-and-push-tag [tag]
+  (b/git-process {:git-args ["tag" tag]})
+  (b/git-process {:git-args ["push" "origin" tag]}))
+
 (defn trigger-library-release
   "Creates a git tag `lib-vVERSION` and pushes it to origin.
   This will trigger GH Action to release to Clojars."
   [opts]
   (let [tag (str "lib-v" (if (:snapshot opts) snapshot version))]
-    (println "Initiating release for git tag:" tag)
-    (b/git-process {:git-args ["tag" tag]})
-    (b/git-process {:git-args ["push" "origin" tag]})))
+    (println "Initiating library release for git tag:" tag)
+    (create-and-push-tag tag)))
 
 ;; App release related scripts
 (defn trigger-app-release
   "Creates a git tag `vVERSION` and pushes it to origin.
   This will trigger GH Action to release the CLI app."
   [opts]
-  (let [tag (str "vv" (if (:snapshot opts) snapshot version))]
-    (println "Initiating release for git tag:" tag)
-    (b/git-process {:git-args ["tag" tag]})
-    (b/git-process {:git-args ["push" "origin" tag]})))
+  (let [tag (str "v" (if (:snapshot opts) snapshot version))]
+    (println "Initiating app release for git tag:" tag)
+    (create-and-push-tag tag)))
 
 ;; Uberjar stuff
 
