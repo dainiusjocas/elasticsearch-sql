@@ -74,16 +74,7 @@
   native-image
   {:doc     "Generates native-image with -o target/esql"
    :depends [uberjar]
-   :task    (let [base-command (str/join " " ["native-image"
-                                              "-jar ./target/esql.jar"
-                                              "-o ./target/esql"
-                                              "--no-fallback"
-                                              "--initialize-at-build-time"])]
-              (shell (cond-> base-command
-                       (= "true" (System/getenv "ESQL_STATIC"))
-                       (str " --static")
-                       (= "true" (System/getenv "ESQL_MUSL"))
-                       (str " --libc=musl"))))}
+   :task    (run 'only-native-image)}
 
   release-library
   {:doc     "Initiate a library release to the Clojars"
