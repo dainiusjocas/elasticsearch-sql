@@ -57,6 +57,20 @@
            (clojure "-T:app:build" "uberjar")
            (println "Uberjar is ready!"))}
 
+  only-native-image
+  {:doc     "Assumes that uberjar is ready and builds native image"
+   :depends []
+   :task    (let [base-command (str/join " " ["native-image"
+                                              "-jar ./target/esql.jar"
+                                              "-o ./target/esql"
+                                              "--no-fallback"
+                                              "--initialize-at-build-time"])]
+              (shell (cond-> base-command
+                       (= "true" (System/getenv "ESQL_STATIC"))
+                       (str " --static")
+                       (= "true" (System/getenv "ESQL_MUSL"))
+                       (str " --libc=musl"))))}
+
   native-image
   {:doc     "Generates native-image with -o target/esql"
    :depends [uberjar]

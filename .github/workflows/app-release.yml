@@ -125,8 +125,8 @@ jobs:
       matrix:
         os: [
           ubuntu-latest,
-          ubuntu-20.04,
-          macos-latest,
+#          ubuntu-20.04,
+#          macos-latest,
 #          windows-latest
         ]
         include:
@@ -136,18 +136,18 @@ jobs:
             arch: 'amd64'
             native-image-musl: 'false'
             static-suffix: ''
-          - os: ubuntu-20.04
-            platform: linux
-            gu-binary: gu
-            arch: 'amd64'
-            native-image-musl: 'true'
-            static-suffix: '-static'
-          - os: macos-latest
-            platform: macos
-            gu-binary: gu
-            arch: 'amd64'
-            native-image-musl: 'false'
-            static-suffix: ''
+#          - os: ubuntu-20.04
+#            platform: linux
+#            gu-binary: gu
+#            arch: 'amd64'
+#            native-image-musl: 'true'
+#            static-suffix: '-static'
+#          - os: macos-latest
+#            platform: macos
+#            gu-binary: gu
+#            arch: 'amd64'
+#            native-image-musl: 'false'
+#            static-suffix: ''
 #          - os: windows-latest
 #            platform: windows
 #            gu-binary: gu.exe
@@ -189,7 +189,7 @@ jobs:
           ESQL_STATIC: ${{ matrix.native-image-musl }}
           ESQL_MUSL: ${{ matrix.native-image-musl }}
         run: |
-          bb native-image
+          bb only-native-image
           zip target/esql-${RELEASE_VERSION}-${{ matrix.platform }}-${{ matrix.arch }}${{ matrix.static-suffix }}.zip target/esql
         if: runner.os != 'Windows'
 
@@ -200,7 +200,7 @@ jobs:
           name: Release ${{ env.RELEASE_VERSION }}
           draft: true
           files: |
-            esql-*-${{ matrix.platform }}-${{ matrix.arch }}${{ matrix.static-suffix }}.zip
+            target/esql-*-${{ matrix.platform }}-${{ matrix.arch }}${{ matrix.static-suffix }}.zip
 
       - name: Archive static native images as artifacts
         uses: actions/upload-artifact@v3
