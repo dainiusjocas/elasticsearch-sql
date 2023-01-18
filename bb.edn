@@ -49,7 +49,10 @@
 
   uberjar
   {:doc  "Generates an uberjar"
-   :task (clojure "-T:app:build" "uberjar")}
+   :task (do
+           (println "Generating uberjar...")
+           (clojure "-T:app:build" "uberjar")
+           (println "Uberjar is ready!"))}
 
   native-image
   {:doc     "Generates native-image with -o target/esql"

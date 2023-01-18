@@ -34,7 +34,6 @@
   (b/delete {:path "target"}))
 
 (defn uberjar [_]
-  (println "Generating uberjar...")
   (clean nil)
   (b/copy-dir {:src-dirs   ["app" "src" "resources"]
                :target-dir class-dir})
@@ -45,5 +44,4 @@
            :uber-file         "target/esql.jar"
            :basis             basis
            :main              'esql.main
-           :conflict-handlers {}})
-  (println "Uberjar is ready!"))
+           :conflict-handlers {}}))
