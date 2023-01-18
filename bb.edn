@@ -43,17 +43,23 @@
   {:doc  "Run test suite on app and library together"
    :task (clojure "-M:app:dev:test")}
 
-  uberscript
+  prepare-uberscript
   {:doc  "Wrapper for the uberscript command"
-   :task (shell "bb uberscript foo.clj -m esql.main")}
+   :task (do
+           (println "Generating uberscript...")
+           (shell "bb uberscript target/esql.clj -m esql.main")
+           (println "Uberscript is ready!"))}
 
   uberjar
   {:doc  "Generates an uberjar"
-   :task (clojure "-T:app:build" "uberjar")}
+   :task (do
+           (println "Generating uberjar...")
+           (clojure "-T:app:build" "uberjar")
+           (println "Uberjar is ready!"))}
 
-  native-image
-  {:doc     "Generates native-image with -o target/esql"
-   :depends [uberjar]
+  only-native-image
+  {:doc     "Assumes that uberjar is ready and builds native image"
+   :depends []
    :task    (let [base-command (str/join " " ["native-image"
                                               "-jar ./target/esql.jar"
                                               "-o ./target/esql"
@@ -65,7 +71,17 @@
                        (= "true" (System/getenv "ESQL_MUSL"))
                        (str " --libc=musl"))))}
 
+  native-image
+  {:doc     "Generates native-image with -o target/esql"
+   :depends [uberjar]
+   :task    (run 'only-native-image)}
+
   release-library
   {:doc     "Initiate a library release to the Clojars"
    :depends []
-   :task    (clojure "-T:build" "trigger-library-release")}}}
+   :task    (clojure "-T:build" "trigger-library-release")}
+
+  release-app
+  {:doc     "Initiate the app GH release"
+   :depends []
+   :task    (clojure "-T:build" "trigger-app-release")}}}
