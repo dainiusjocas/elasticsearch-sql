@@ -25,6 +25,16 @@
     (b/git-process {:git-args ["tag" tag]})
     (b/git-process {:git-args ["push" "origin" tag]})))
 
+;; App release related scripts
+(defn trigger-app-release
+  "Creates a git tag `vVERSION` and pushes it to origin.
+  This will trigger GH Action to release the CLI app."
+  [opts]
+  (let [tag (str "vv" (if (:snapshot opts) snapshot version))]
+    (println "Initiating release for git tag:" tag)
+    (b/git-process {:git-args ["tag" tag]})
+    (b/git-process {:git-args ["push" "origin" tag]})))
+
 ;; Uberjar stuff
 
 (def class-dir "target/classes")

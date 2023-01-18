@@ -71,4 +71,9 @@
   release-library
   {:doc     "Initiate a library release to the Clojars"
    :depends []
-   :task    (clojure "-T:build" "trigger-library-release")}}}
+   :task    (clojure "-T:build" "trigger-library-release")}
+
+  release-app
+  {:doc     "Initiate the app GH release"
+   :depends []
+   :task    (clojure "-T:build" "trigger-app-release")}}}
