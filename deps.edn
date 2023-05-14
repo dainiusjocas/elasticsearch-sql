@@ -28,6 +28,11 @@
    :extra-deps {clj-kondo/clj-kondo {:mvn/version "2023.01.12"}}
    :jvm-opts   ["-Dclojure.main.report=stderr"]}
 
+  :nextjournal/clerk
+  {:exec-fn                   nextjournal.clerk/build!
+   :exec-args                 {:paths ["docs/presentation.md"]}
+   :nextjournal.clerk/aliases [:dev]}
+
   :build
   {:deps       {io.github.seancorfield/build-clj {:git/tag "v0.9.1" :git/sha "831c70f"}}
    :ns-default build}}}
