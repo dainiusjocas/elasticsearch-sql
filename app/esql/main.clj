@@ -4,6 +4,8 @@
     [clojure.string :as str]
     [clojure.pprint :as pp]
     [esql.cli :as cli]
+    [cheshire.core :as json]
+    [clj-yaml.core :as yaml]
     [elasticsearch.sql :as sql]))
 
 (set! *warn-on-reflection* true)
@@ -17,7 +19,16 @@
     {}
     m))
 
-(def noop-transducer (comp))
+(defn format-data
+  "Depending on the format"
+  [config]
+  (case (:format config)
+    "json" (map (fn [data] (json/generate-string data)))
+    "smile" (map (fn [data] (String. (json/generate-smile data))))
+    "cbor" (map (fn [data] (String. (json/generate-cbor data))))
+    "yaml" (map (fn [data] (yaml/generate-string data)))
+    (comp)))
+
 (def initial-value nil)
 
 (defn print-reducing-function
@@ -32,7 +43,9 @@
   "Fetch data from Elasticsearch and print it to STDOUT.
   Elasticsearch SQL expects config params to be with underscores."
   [config]
-  (transduce noop-transducer print-reducing-function initial-value
+  (transduce (format-data config)
+             print-reducing-function
+             initial-value
              (sql/reducible (underscore-keys config))))
 
 (defn -main [& args]

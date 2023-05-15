@@ -4,7 +4,7 @@
             [org.httpkit.client :as http]
             [cheshire.core :as json]))
 
-(def elasticsearch-version-docker-tag "8.6.0")
+(def elasticsearch-version-docker-tag "8.7.1")
 
 (def ^{:doc "Name of the index with sample data"}
   index-name "index")
