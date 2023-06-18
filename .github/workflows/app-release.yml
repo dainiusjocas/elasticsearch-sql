@@ -5,9 +5,6 @@ on:
     tags:
       - 'v*'
 
-env:
-  GRAALVM_VERSION: '22.3.0'
-
 jobs:
   create-gh-release:
     runs-on: ubuntu-latest
@@ -160,9 +157,9 @@ jobs:
 
       - uses: graalvm/setup-graalvm@v1
         with:
-          version: ${{ env.GRAALVM_VERSION }}
-          java-version: '17'
-          components: 'native-image'
+          java-version: '20.0.1'
+          distribution: 'graalvm'
+          native-image-job-reports: 'true'
           native-image-musl: ${{ matrix.native-image-musl }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 

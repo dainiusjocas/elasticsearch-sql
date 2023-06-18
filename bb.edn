@@ -67,6 +67,7 @@
                                               "-jar ./target/esql.jar"
                                               "-o ./target/esql"
                                               "--no-fallback"
+                                              "-march=native"
                                               "--initialize-at-build-time"])]
               (shell (cond-> base-command
                        (= "true" (System/getenv "ESQL_STATIC"))
