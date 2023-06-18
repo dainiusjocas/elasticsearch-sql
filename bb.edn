@@ -1,5 +1,5 @@
 {:paths          ["app" "src" "resources" "scripts"]
- :deps           {metosin/malli      {:mvn/version "0.10.0"}
+ :deps           {metosin/malli      {:mvn/version "0.11.0"}
                   lt.jocas/malli-cli {:git/url "https://github.com/dainiusjocas/malli-cli"
                                       :sha     "699de0ee5d568276c7b68baae803cdffa8770bd4"}}
  :min-bb-version "1.0.169"
@@ -29,6 +29,9 @@
               (spit -es-malli-schema (with-out-str (clojure.pprint/pprint request))))}
 
   outdated
+  {:doc  "Checks for outdated dependencies."
+   :task (clojure "-Sdeps '{:deps {org.slf4j/slf4j-nop {:mvn/version \"2.0.7\"} com.github.liquidz/antq {:mvn/version \"RELEASE\"}}}' -M -m antq.core")}
+  dependencies
   {:doc  "Check for outdated dependencies"
    :task (shell "bb -f scripts/outdated.clj")}
 
