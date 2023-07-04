@@ -88,4 +88,9 @@
   release-app
   {:doc     "Initiate the app GH release"
    :depends []
-   :task    (clojure "-T:build" "trigger-app-release")}}}
+   :task    (clojure "-T:build" "trigger-app-release")}
+
+  build-clerk
+  {:doc     "Build static clerk site"
+   :depends []
+   :task (clojure "-X:dev:nextjournal/clerk")}}}
